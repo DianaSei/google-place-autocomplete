@@ -1,14 +1,9 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
-import { HISTORY_GET_RESULTS } from "../redux/actions";
 
 const HistoryResults = (props) => {
   const { results } = props;
-  useEffect(() => {
-    props.getHistory();
-  }, [])
-  
   return(
     <Fragment>
       {results && results.length > 0 && 
@@ -30,11 +25,9 @@ const mapStateToProps = ({ history }) => {
   return { results };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  getHistory: () => dispatch({ type: HISTORY_GET_RESULTS }),
-});
+const mapActionsToProps = {};
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapActionsToProps
 )(HistoryResults);

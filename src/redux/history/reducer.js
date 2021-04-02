@@ -11,7 +11,7 @@ const INIT_STATE = {
   results: null,
 };
 
-export default (state = INIT_STATE, {type, payload}) => {
+const reducer = (state = INIT_STATE, {type, payload}) => {
   switch (type) {
     case HISTORY_GET_RESULTS:
       return { ...state};
@@ -28,4 +28,6 @@ export default (state = INIT_STATE, {type, payload}) => {
 
     default: return { ...state };
   }
-}
+};
+
+export default reducer;
