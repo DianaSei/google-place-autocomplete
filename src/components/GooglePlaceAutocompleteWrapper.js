@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
+import { CREATE_HISTORY_RECORD } from '../redux/actions';
 
-const GooglePlaceAutocompleteWrapper = () => {
+const GooglePlaceAutocompleteWrapper = (history) => {
   const [query, setQuery] = useState("");
   const autoCompleteRef = useRef(null);
 
+  let autoComplete;
+  
   useEffect(() => {
     loadScript(
       `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
@@ -14,8 +16,6 @@ const GooglePlaceAutocompleteWrapper = () => {
     );
   }, []);
     
-  let autoComplete;
-  
   const loadScript = (url, callback) => {
     let script = document.createElement("script");
     script.type = "text/javascript";
@@ -50,26 +50,35 @@ const GooglePlaceAutocompleteWrapper = () => {
     const addressObject = autoComplete.getPlace();
     const query = addressObject.formatted_address;
     updateQuery(query);
-    console.log(addressObject);
+    history.createRecord(query);
   }
     
   return (
-    <Box mt={3}>
-      <Input
-        ref={autoCompleteRef}
-        className="search-location-input"
-        onChange={event => setQuery(event.target.value)}
-        placeholder="Enter a location"
-        value={query}
-        startAdornment={
-          <InputAdornment position="start">
-            <img src="/images/location-pin.png" width="20"/>
-          </InputAdornment>
-        }
-      />
+    <Box my={5}>
+      <div className="search-location-wrapper">
+        <img src="/images/location-pin.png" width="20" alt="Location pin icon" className="search-location-icon"/>
+        <input
+          ref={autoCompleteRef}
+          className="search-location-input"
+          onChange={event => {setQuery(event.target.value)}}
+          placeholder="Enter a location"
+          value={query}
+        />
+      </div>
     </Box>
   );
 }
 
+const mapStateToProps = ({ history }) => {
+  const { results } = history;
+  return { results };
+};
 
-export default GooglePlaceAutocompleteWrapper;
+const mapDispatchToProps = (dispatch) => ({
+  createRecord: (location) => dispatch({ type: CREATE_HISTORY_RECORD, payload: location }),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GooglePlaceAutocompleteWrapper);

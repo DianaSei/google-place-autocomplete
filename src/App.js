@@ -1,12 +1,15 @@
 import './App.css';
 import MainPage from './views/main-page.js';
-require('dotenv').config();
+import { configureStore } from './redux/store';
+import { Provider } from 'react-redux';
 
 function App() {
   return (
-    <div className="google-place-automoplete-app">
-      <MainPage/>
-    </div>
+    <Provider store={configureStore()}>
+      <div className="google-place-automoplete-app">
+        <MainPage/>
+      </div>
+    </Provider>
   );
 }
 
