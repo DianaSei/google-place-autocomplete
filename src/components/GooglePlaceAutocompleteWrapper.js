@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import { CREATE_HISTORY_RECORD } from '../redux/actions';
+import Button from '@material-ui/core/Button';
 
 const GooglePlaceAutocompleteWrapper = (history) => {
   const [query, setQuery] = useState("");
@@ -52,11 +53,15 @@ const GooglePlaceAutocompleteWrapper = (history) => {
     updateQuery(query);
     history.createRecord(query);
   }
+
+  function clearQuery(){
+    setQuery("");
+  }
     
   return (
     <Box my={5}>
       <div className="search-location-wrapper">
-        <img src="/images/location-pin.png" width="20" alt="Location pin icon" className="search-location-icon"/>
+        <img src="/images/location-pin.png" width="30" alt="Location pin icon" className="search-location-icon"/>
         <input
           ref={autoCompleteRef}
           className="search-location-input"
@@ -64,6 +69,7 @@ const GooglePlaceAutocompleteWrapper = (history) => {
           placeholder="Enter a location"
           value={query}
         />
+        <Button variant="contained" color="primary" onClick={clearQuery}>Clear</Button>
       </div>
     </Box>
   );
