@@ -8,14 +8,16 @@ import HistoryResults from '../components/HistoryResults';
 import { HISTORY_GET_RESULTS } from '../redux/actions';
 
 class MainPage extends Component {
+  componentDidMount(){
+    this.props.getResults();
+  }
   render() {
-    const getResults = this.props.getResults();
     return (
       <Container maxWidth="lg">
         <Box my={4}>
           <Header/>
           <GooglePlaceAutocompleteWrapper/>
-          <HistoryResults getResults={getResults}/>
+          <HistoryResults/>
         </Box>
       </Container>
     )
